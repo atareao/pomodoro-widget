@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="pomodoro-widget@atareao.es">
+    <schema path="/org/gnome/shell/extensions/pomodoro-widget/" id="org.gnome.shell.extensions.pomodoro-widget">
+        <key name="debug" type="b">
+            <default>false</default>
+            <summary>Debug Mode</summary>
+            <description>Enable debug features and logging</description>
+        </key>
+        <key name="running" type="i">
+            <default>-1</default>
+            <summary>Status</summary>
+            <description>Status</description>
+        </key>
+        <key name="elapsed" type="i">
+            <default>0</default>
+            <summary>Elapsed time</summary>
+            <description>Elapsed time</description>
+        </key>
+        <key name="pomodoros" type="i">
+            <default>4</default>
+            <summary>Pomodoros</summary>
+            <description>Number of pomodoros</description>
+        </key>
+        <key name="pomodoro-length" type="i">
+            <default>25</default>
+            <summary>Pomodoro length</summary>
+            <description>The length of the pomodoro session</description>
+        </key>
+        <key name="short-break-length" type="i">
+            <default>5</default>
+            <summary>Short break length</summary>
+            <description>The lengh of the sort break inverval</description>
+        </key>
+        <key name="long-break-length" type="i">
+            <default>15</default>
+            <summary>Long break length</summary>
+            <description>The length of the long break interval</description>
+        </key>
+        <key name="auto-start-breaks" type="b">
+            <default>false</default>
+            <summary>Auto start breaks</summary>
+            <description>If the breaks start automatically</description>
+        </key>
+        <key name="auto-start-pomodoros" type="b">
+            <default>false</default>
+            <summary>Auto start pomodoros</summary>
+            <description>If the pomodoros start automatically</description>
+        </key>
+        <key type="(ii)" name="location">
+            <default>(0, 0)</default>
+            <summary>Location</summary>
+            <description>Location of the Pomodoro Desktop</description>
+        </key>
+        <key name="lock-widget" type="b">
+            <default>false</default>
+            <summary>Lock Widget</summary>
+            <description>Lock Widget. Prevent drag</description>
+        </key>
+        <key name="pomodoro-color" type="s">
+          <default>'#D95550'</default>
+          <summary>Pomodoro color</summary>
+          <description>Pomodoro color</description>
+        </key>
+        <key name="short-break-color" type="s">
+          <default>'#4C9195'</default>
+          <summary>Short break color</summary>
+          <description>Short break color</description>
+        </key>
+        <key name="long-break-color" type="s">
+          <default>'#457CA3'</default>
+          <summary>Long break color</summary>
+          <description>Long break color</description>
+        </key>
+        <key name="notifications" type="b">
+            <default>false</default>
+            <summary>Enable notifications</summary>
+            <description>Show notifications on warning or danger time</description>
+        </key>
+    </schema>
+</schemalist>

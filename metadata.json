@@ -1,0 +1,17 @@
+{
+  "autor": "Lorenzo Carbonell",
+  "copyright": "2022",
+  "description": "Follow pomodoro techniche",
+  "gettext-domain": "pomodoro-widget@atareao.es",
+  "icon": "pomodoro-widget",
+  "name": "pomodoro-widget",
+  "settings-schema": "org.gnome.shell.extensions.pomodoro-widget",
+  "shell-version": [
+    "40",
+    "41",
+    "42"
+  ],
+  "url": "https://www.atareao.es/aplicacion/pomodoro-widget",
+  "uuid": "pomodoro-widget@atareao.es",
+  "version": 1
+}

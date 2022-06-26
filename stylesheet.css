@@ -1,0 +1,11 @@
+StButton.pomodoro-button {
+    border-radius: 5px;
+    background-color: #474747;
+    transition-duration: 0.4s;
+    padding: 5px;
+    margin: 5px;
+}
+StButton.pomodoro-button:hover{
+    background-color: #4CAF50;
+    color: white;
+}

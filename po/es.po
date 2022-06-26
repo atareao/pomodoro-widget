@@ -1,0 +1,283 @@
+# Spanish translations for pomodoro-widget package.
+# Copyright (C) 2022 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the pomodoro-widget package.
+# Lorenzo <atareao@atareao.es>, 2022.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: pomodoro-widget - 1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-06-26 08:50+0200\n"
+"PO-Revision-Date: 2022-06-26 08:50+0200\n"
+"Last-Translator: Lorenzo <atareao@atareao.es>\n"
+"Language-Team: Spanish <es@tp.org.es>\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:6
+msgid "Debug Mode"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:7
+msgid "Enable debug features and logging"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:11
+#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:12
+msgid "Status"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:16
+#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:17
+msgid "Elapsed time"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:21
+msgid "Pomodoros"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:22
+msgid "Number of pomodoros"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:26
+msgid "Pomodoro length"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:27
+msgid "The length of the pomodoro session"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:31
+msgid "Short break length"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:32
+msgid "The lengh of the sort break inverval"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:36
+msgid "Long break length"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:37
+msgid "The length of the long break interval"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:41
+msgid "Auto start breaks"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:42
+msgid "If the breaks start automatically"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:46
+msgid "Auto start pomodoros"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:47
+msgid "If the pomodoros start automatically"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:51
+msgid "Location"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:52
+msgid "Location of the Pomodoro Desktop"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:56
+msgid "Lock Widget"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:57
+msgid "Lock Widget. Prevent drag"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:61
+#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:62
+msgid "Pomodoro color"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:66
+#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:67
+msgid "Short break color"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:71
+#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:72
+msgid "Long break color"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:76
+msgid "Enable notifications"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:77
+msgid "Show notifications on warning or danger time"
+msgstr ""
+
+#: dialogwidgets.js:53
+msgid "Cancel"
+msgstr ""
+
+#: dialogwidgets.js:54
+msgid "Ok"
+msgstr ""
+
+#: prefs.js:48
+msgid "Pomodoro options"
+msgstr ""
+
+#: prefs.js:58
+msgid "Pomodoro Widget Preferences"
+msgstr ""
+
+#: prefs.js:61
+msgid "About"
+msgstr ""
+
+#: prefs.js:70
+msgid "Pomodoro Widget Configuration"
+msgstr ""
+
+#: preferenceswidget.js:248
+msgid "Nothing"
+msgstr ""
+
+#: preferenceswidget.js:261
+msgid "True"
+msgstr ""
+
+#: preferenceswidget.js:274
+msgid "False"
+msgstr ""
+
+#: preferenceswidget.js:468 preferenceswidget.js:999
+msgid "Edit"
+msgstr ""
+
+#: preferenceswidget.js:515 preferenceswidget.js:533 preferenceswidget.js:562
+msgid "Name"
+msgstr ""
+
+#: preferenceswidget.js:521 preferenceswidget.js:533 preferenceswidget.js:562
+msgid "Service"
+msgstr ""
+
+#: preferenceswidget.js:1009
+msgid "Remove"
+msgstr ""
+
+#: aboutpage.js:45
+msgid "Buy me a coffee"
+msgstr ""
+
+#: aboutpage.js:51
+msgid "Version"
+msgstr ""
+
+#: aboutpage.js:53
+msgid "GNOME Version"
+msgstr ""
+
+#: aboutpage.js:56
+msgid "OS"
+msgstr ""
+
+#: aboutpage.js:58
+msgid "SessionType"
+msgstr ""
+
+#: aboutpage.js:83
+msgid "Developers"
+msgstr ""
+
+#: aboutpage.js:90
+msgid "Contributors"
+msgstr ""
+
+#: aboutpage.js:91
+msgid "Thank you to all contributors!"
+msgstr ""
+
+#: aboutpage.js:92
+msgid "For a list of all contributors, please visit"
+msgstr ""
+
+#: aboutpage.js:101
+msgid "Supporters"
+msgstr ""
+
+#: aboutpage.js:102
+msgid "Thank you to all supporters!"
+msgstr ""
+
+#: aboutpage.js:103
+msgid "For a list of all supporters, please visit"
+msgstr ""
+
+#: aboutpage.js:110
+msgid "License"
+msgstr ""
+
+#: aboutpage.js:123
+msgid "More info"
+msgstr ""
+
+#: aboutpage.js:133
+msgid "More information"
+msgstr ""
+
+#: aboutpage.js:136
+msgid "Report an issue"
+msgstr ""
+
+#: extension.js:77
+msgid "Previous"
+msgstr ""
+
+#: extension.js:94 extension.js:248
+msgid "Start"
+msgstr ""
+
+#: extension.js:109
+msgid "Next"
+msgstr ""
+
+#: extension.js:249
+msgid "Stopped"
+msgstr ""
+
+#: extension.js:268
+msgid "Stop"
+msgstr ""
+
+#: extension.js:293 extension.js:322
+msgid "Pomodoro"
+msgstr ""
+
+#: extension.js:301
+msgid "Short break"
+msgstr ""
+
+#: extension.js:305 extension.js:331
+msgid "Long break"
+msgstr ""
+
+#: extension.js:460
+msgid "Unlock"
+msgstr ""
+
+#: extension.js:460
+msgid "Lock"
+msgstr ""
+
+#: extension.js:462
+msgid "Pomodoro Widget Settings"
+msgstr ""
