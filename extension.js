@@ -300,7 +300,7 @@ var PomodoroWidget = GObject.registerClass(
                     if(diff <= this._pomodoroLength){
                         text = this._pomodoroLength - diff;
                         percentage = Math.round(diff/this._pomodoroLength * 100);
-                        station = _("Pomodoro") + " #" + String(Math.round(this._running / 2));
+                        station = _("Pomodoro") + " #" + String(Math.round(this._running / 2) + 1);
                         color = this._pomodoroColor;
                     }else{
                         this.setRunning(this._running + 1);
@@ -308,7 +308,7 @@ var PomodoroWidget = GObject.registerClass(
                         this._startTime = GLib.DateTime.new_now_utc();
                         if(this._running < this._pomodoros * 2 - 1 && this._running % 2 != 0){
                             text = this._shortBreakLength;
-                            station = _("Short break") + " #" + String(Math.round(this._running / 2));
+                            station = _("Short break") + " #" + String(Math.round(this._running / 2) + 1);
                             color = this._shortBreakColor;
                         }else{
                             text = this._longBreakLength;
@@ -322,7 +322,7 @@ var PomodoroWidget = GObject.registerClass(
                     if(diff <= this._shortBreakLength){
                         text = this._shortBreakLength - diff;
                         percentage = Math.round(diff/this._shortBreakLength * 100);
-                        station = _("Short break") + " #" + String(Math.round(this._running / 2));
+                        station = _("Short break") + " #" + String(Math.round(this._running / 2) + 1);
                         color = this._shortBreakColor;
                     }else{
                         this.setRunning(this._running + 1);
@@ -330,7 +330,7 @@ var PomodoroWidget = GObject.registerClass(
                         this._startTime = GLib.DateTime.new_now_utc();
                         text = this._pomodoroLength;
                         percentage = 0;
-                        station = _("Pomodoro") + " #" + String(Math.round(this._running / 2));
+                        station = _("Pomodoro") + " #" + String(Math.round(this._running / 2) + 1);
                         color = this._pomodoroColor;
                     }
                 }
