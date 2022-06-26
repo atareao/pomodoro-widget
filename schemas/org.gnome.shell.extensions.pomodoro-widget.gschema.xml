@@ -51,11 +51,6 @@
             <summary>Location</summary>
             <description>Location of the Pomodoro Desktop</description>
         </key>
-        <key name="lock-widget" type="b">
-            <default>false</default>
-            <summary>Lock Widget</summary>
-            <description>Lock Widget. Prevent drag</description>
-        </key>
         <key name="pomodoro-color" type="s">
           <default>'#D95550'</default>
           <summary>Pomodoro color</summary>
