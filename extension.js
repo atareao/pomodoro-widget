@@ -81,13 +81,18 @@ var PomodoroWidget = GObject.registerClass(
                 x_expand: true,
             });
             this._previousButton.connect("clicked", ()=>{
+                if(this._running == -1){
+                    this.play();
+                }
                 this._running -= 1;
                 if(this._running < 0){
                     this._running = this._pomodoros * 2 - 1;
                 }
                 this.setRunning(this._running);
                 this.setElapsed(0);
-                this.play();
+                this._startStopButton.set_label(_("Stop"));
+                this._startTime = GLib.DateTime.new_now_utc().add_minutes(-this._elapsed);
+                this.update();
             });
             down_buttons.add_child(this._previousButton);
             this._startStopButton = new St.Button({
@@ -113,13 +118,18 @@ var PomodoroWidget = GObject.registerClass(
                 x_expand: true,
             });
             this._nextButton.connect("clicked", ()=>{
+                if(this._running == -1){
+                    this.play();
+                }
                 this._running += 1;
                 if(this._running > this._pomodoros * 2 - 1){
                     this._running = 0;
                 }
                 this.setRunning(this._running);
                 this.setElapsed(0);
-                this.play();
+                this._startStopButton.set_label(_("Stop"));
+                this._startTime = GLib.DateTime.new_now_utc().add_minutes(-this._elapsed);
+                this.update();
             });
             down_buttons.add_child(this._nextButton);
             this.add_child(down_buttons);
@@ -312,6 +322,7 @@ var PomodoroWidget = GObject.registerClass(
                     if(diff <= this._shortBreakLength){
                         text = this._shortBreakLength - diff;
                         percentage = Math.round(diff/this._shortBreakLength * 100);
+                        station = _("Short break") + " #" + String(Math.round(this._running / 2));
                         color = this._shortBreakColor;
                     }else{
                         this.setRunning(this._running + 1);

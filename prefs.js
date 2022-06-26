@@ -47,17 +47,47 @@ var PomodoroWidgetPreferencesWidget = GObject.registerClass(
             let pomodoroSection = preferencesPage.addFrame(
                 _("Pomodoro options"));
 
-            pomodoroSection.addGSetting(settings, "pomodoros");
-            pomodoroSection.addGSetting(settings, "pomodoro-length");
-            pomodoroSection.addGSetting(settings, "short-break-length");
-            pomodoroSection.addGSetting(settings, "long-break-length");
+            pomodoroSection.addWidgetSetting(
+                settings,
+                "pomodoros",
+                new Widgets.NumberSetting(settings, "pomodoros", 2, 1000, 0));
+            pomodoroSection.addWidgetSetting(
+                settings,
+                "pomodoro-length",
+                new Widgets.NumberSetting(settings, "pomodoro-length", 1, 60, 0));
+            pomodoroSection.addWidgetSetting(
+                settings,
+                "short-break-length",
+                new Widgets.NumberSetting(settings, "short-break-length", 1, 60, 0));
+            pomodoroSection.addWidgetSetting(
+                settings,
+                "long-break-length",
+                new Widgets.NumberSetting(settings, "long-break-length", 1, 60, 0));
             pomodoroSection.addGSetting(settings, "auto-start-breaks");
             pomodoroSection.addGSetting(settings, "auto-start-pomodoros");
             pomodoroSection.addGSetting(settings, "lock-widget");
 
+            let preferencesStylePage = new Widgets.Page();
+            let pomodoroStyleSection = preferencesStylePage.addFrame(
+                _("Pomodoro style options"));
+            pomodoroStyleSection.addWidgetSetting(
+                settings,
+                "pomodoro-color",
+                new Widgets.ColorSetting(settings, "pomodoro-color"));
+            pomodoroStyleSection.addWidgetSetting(
+                settings,
+                "short-break-color",
+                new Widgets.ColorSetting(settings, "short-break-color"));
+            pomodoroStyleSection.addWidgetSetting(
+                settings,
+                "long-break-color",
+                new Widgets.ColorSetting(settings, "long-break-color"));
             this.add(_("Pomodoro Widget Preferences"),
                      "preferences-other-symbolic",
                      preferencesPage);
+            this.add(_("Pomodoro Style Preferences"),
+                     "preferences-other-symbolic",
+                     preferencesStylePage);
             this.add(_("About"), "help-about-symbolic", new AboutPage());
         }
     }
