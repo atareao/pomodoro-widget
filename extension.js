@@ -64,7 +64,7 @@ var PomodoroWidget = GObject.registerClass(
                 track_hover: false
             });
             this.add_child(container);
-            this._pomodoroPieChart = new PieChart(280, 280, 45, "25");
+            this._pomodoroPieChart = new PieChart(280, 280, 45, "0");
             container.add_child(this._pomodoroPieChart);
 
             let down_buttons = new St.BoxLayout({
@@ -89,9 +89,8 @@ var PomodoroWidget = GObject.registerClass(
                     this._running = this._pomodoros * 2 - 1;
                 }
                 this.setRunning(this._running);
-                this.setElapsed(0);
                 this._startStopButton.set_label(_("Stop"));
-                this._startTime = GLib.DateTime.new_now_utc().add_minutes(-this._elapsed);
+                this._startTime = GLib.DateTime.new_now_utc();
                 this.update();
             });
             down_buttons.add_child(this._previousButton);
@@ -126,9 +125,8 @@ var PomodoroWidget = GObject.registerClass(
                     this._running = 0;
                 }
                 this.setRunning(this._running);
-                this.setElapsed(0);
                 this._startStopButton.set_label(_("Stop"));
-                this._startTime = GLib.DateTime.new_now_utc().add_minutes(-this._elapsed);
+                this._startTime = GLib.DateTime.new_now_utc();
                 this.update();
             });
             down_buttons.add_child(this._nextButton);
@@ -153,8 +151,7 @@ var PomodoroWidget = GObject.registerClass(
             this.connect('notify::hover', () => this._onHover());
             this.connect('destroy', this._onDestroy.bind(this));
 
-            if(!this._settings.get_boolean('lock-widget'))
-                this.makeDraggable();
+            this.makeDraggable();
 
             //this.update();
             //this.setTextStyle();
@@ -177,10 +174,16 @@ var PomodoroWidget = GObject.registerClass(
             //this._settings.connect('changed::time-date-order', () => pomodoroWidget.setLabelPositions());
 
             this._connections.push(this._settings.connect('changed::date-format', () => this.update()));
-            this._connections.push(this._settings.connect('changed::lock-widget', () => this.makeDraggable()));
             this.loadPreferences()
             if(this._running > -1){
                 this.play();
+            }else{
+                this._startStopButton.set_label(_("Start"));
+                this._stationLabel.set_text(_("Stopped"));
+                this._pomodoroPieChart.setText("-");
+                this._pomodoroPieChart.setPercentage(0);
+                this._pomodoroPieChart.setColor(this._pomodoroColor);
+                this._pomodoroPieChart.redraw();
             }
         }
 
@@ -255,6 +258,7 @@ var PomodoroWidget = GObject.registerClass(
 
         stop(){
             this.setRunning(-1);
+            this.setElapsed(0);
             this._startStopButton.set_label(_("Start"));
             this._stationLabel.set_text(_("Stopped"));
             this._pomodoroPieChart.setText("-");
@@ -297,7 +301,7 @@ var PomodoroWidget = GObject.registerClass(
             if(this._running < this._pomodoros * 2 - 1){
                 if(this._running % 2 == 0){
                     // In a pomodoro
-                    if(diff <= this._pomodoroLength){
+                    if(diff < this._pomodoroLength){
                         text = this._pomodoroLength - diff;
                         percentage = Math.round(diff/this._pomodoroLength * 100);
                         station = _("Pomodoro") + " #" + String(Math.round(this._running / 2) + 1);
@@ -319,7 +323,7 @@ var PomodoroWidget = GObject.registerClass(
                     }
                 }else{
                     // In a short break
-                    if(diff <= this._shortBreakLength){
+                    if(diff < this._shortBreakLength){
                         text = this._shortBreakLength - diff;
                         percentage = Math.round(diff/this._shortBreakLength * 100);
                         station = _("Short break") + " #" + String(Math.round(this._running / 2) + 1);
@@ -442,20 +446,19 @@ var PomodoroWidget = GObject.registerClass(
         }
 
         _removeMenuTimeout() {
-            if (this._menuTimeoutId > 0) {
+            if (this._menuTimeoutId) {
                 GLib.source_remove(this._menuTimeoutId);
-                this._menuTimeoutId = 0;
+                this._menuTimeoutId = null;
             }
         }
 
         _setPopupTimeout() {
             this._removeMenuTimeout();
             this._menuTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 600, () => {
-                this._menuTimeoutId = 0;
+                this._menuTimeoutId = null;
                 this._popupMenu();
                 return GLib.SOURCE_REMOVE;
             });
-            GLib.Source.set_name_by_id(this._menuTimeoutId, '[azclock] this.popupMenu');
         }
 
         _popupMenu() {
@@ -463,12 +466,6 @@ var PomodoroWidget = GObject.registerClass(
 
             if (!this._menu) {
                 this._menu = new PopupMenu.PopupMenu(this, 0.5, St.Side.TOP);
-                let lockWidgetItem = this._menu.addAction('', () => {
-                    this._menu.close();
-                    this._settings.set_boolean('lock-widget', !this._settings.get_boolean('lock-widget'));
-                });
-
-                lockWidgetItem.label.text = this._settings.get_boolean('lock-widget') ? _("Unlock") : _("Lock");
 
                 this._menu.addAction(_("Pomodoro Widget Settings"), () => {
                     ExtensionUtils.openPrefs();
@@ -483,7 +480,18 @@ var PomodoroWidget = GObject.registerClass(
         }
 
         _onDestroy() {
-            this.stop();
+            if(this._counter){
+                GLib.source_remove(this._counter);
+                this._counter = null;
+            }
+            if (this._menuTimeoutId) {
+                GLib.source_remove(this._menuTimeoutId);
+                this._menuTimeoutId = null;
+            }
+            this._connections.forEach(connection => {
+                this._settings.disconnect(connection);
+            });
+            this._connections = null;
         }
 
         destroy(){
