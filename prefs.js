@@ -109,5 +109,19 @@ export default class PomodoroWidgetPreferences extends ExtensionPreferences{
     return group;
   }
 
+  buildPomodorosColor(window){
+    const group = Adw.PreferencesGroup.new();
+    group.set_title(_("Colors"));
+    group.set_name("pomodoros-colors");
+
+    const pomodor_color = Adw.SwitchRow.new();
+    pomodor_color.set_title(_("Pomodoro color"));
+    pomodor_color.set_name("pomodoro-color");
+    window._settings.bind("pomodoro-color", pomodor_color, "color-scheme", Gio.SettingsBindFlags.DEFAULT);
+    group.add(pomodor_color);
+
+    return group;
+  }
+
 };
 
