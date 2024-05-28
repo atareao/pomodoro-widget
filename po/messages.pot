@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-26 08:50+0200\n"
+"POT-Creation-Date: 2022-06-26 10:52+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -92,33 +92,25 @@ msgid "Location of the Pomodoro Desktop"
 msgstr ""
 
 #: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:56
-msgid "Lock Widget"
-msgstr ""
-
 #: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:57
-msgid "Lock Widget. Prevent drag"
+msgid "Pomodoro color"
 msgstr ""
 
 #: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:61
 #: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:62
-msgid "Pomodoro color"
+msgid "Short break color"
 msgstr ""
 
 #: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:66
 #: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:67
-msgid "Short break color"
-msgstr ""
-
-#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:71
-#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:72
 msgid "Long break color"
 msgstr ""
 
-#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:76
+#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:71
 msgid "Enable notifications"
 msgstr ""
 
-#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:77
+#: schemas/org.gnome.shell.extensions.pomodoro-widget.gschema.xml:72
 msgid "Show notifications on warning or danger time"
 msgstr ""
 
@@ -134,15 +126,23 @@ msgstr ""
 msgid "Pomodoro options"
 msgstr ""
 
-#: prefs.js:58
+#: prefs.js:72
+msgid "Pomodoro style options"
+msgstr ""
+
+#: prefs.js:85
 msgid "Pomodoro Widget Preferences"
 msgstr ""
 
-#: prefs.js:61
+#: prefs.js:88
+msgid "Pomodoro Style Preferences"
+msgstr ""
+
+#: prefs.js:91
 msgid "About"
 msgstr ""
 
-#: prefs.js:70
+#: prefs.js:100
 msgid "Pomodoro Widget Configuration"
 msgstr ""
 
@@ -242,42 +242,34 @@ msgstr ""
 msgid "Previous"
 msgstr ""
 
-#: extension.js:94 extension.js:248
-msgid "Start"
-msgstr ""
-
-#: extension.js:109
-msgid "Next"
-msgstr ""
-
-#: extension.js:249
-msgid "Stopped"
-msgstr ""
-
-#: extension.js:268
+#: extension.js:92 extension.js:128 extension.js:282
 msgid "Stop"
 msgstr ""
 
-#: extension.js:293 extension.js:322
+#: extension.js:98 extension.js:181 extension.js:262
+msgid "Start"
+msgstr ""
+
+#: extension.js:113
+msgid "Next"
+msgstr ""
+
+#: extension.js:182 extension.js:263
+msgid "Stopped"
+msgstr ""
+
+#: extension.js:307 extension.js:337
 msgid "Pomodoro"
 msgstr ""
 
-#: extension.js:301
+#: extension.js:315 extension.js:329
 msgid "Short break"
 msgstr ""
 
-#: extension.js:305 extension.js:331
+#: extension.js:319 extension.js:346
 msgid "Long break"
 msgstr ""
 
-#: extension.js:460
-msgid "Unlock"
-msgstr ""
-
-#: extension.js:460
-msgid "Lock"
-msgstr ""
-
-#: extension.js:462
+#: extension.js:470
 msgid "Pomodoro Widget Settings"
 msgstr ""
