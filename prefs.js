@@ -16,7 +16,7 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * AUTHORS OR COPYRIGHTCOPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
@@ -24,13 +24,17 @@
 
 import Adw from "gi://Adw";
 import Gio from "gi://Gio";
+import Gdk from "gi://Gdk";
+import Gtk from "gi://Gtk";
+import GLib from "gi://GLib";
 
 import {
-    ExtensionPreferences,
-    gettext as _,
+  ExtensionPreferences,
+  gettext as _,
 } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
+import ColorRow from "./colorrow.js"
 
-export default class PomodoroWidgetPreferences extends ExtensionPreferences{
+export default class PomodoroWidgetPreferences extends ExtensionPreferences {
   fillPreferencesWindow(window) {
     window._settings = this.getSettings();
     window.search_enabled = true;
@@ -47,10 +51,13 @@ export default class PomodoroWidgetPreferences extends ExtensionPreferences{
 
     const page_colors = Adw.PreferencesPage.new();
     page_colors.set_title(_("Colors"))
+    page.set_name("pomodoro-widget-colors");
+
+    page_colors.add(this.buildPomodorosColor(window));
     window.add(page_colors);
   }
 
-  buildPomodorosGroup(window){
+  buildPomodorosGroup(window) {
     const group = Adw.PreferencesGroup.new();
     group.set_title(_("Pomodoros"));
     group.set_name("pomodoros-group");
@@ -63,7 +70,7 @@ export default class PomodoroWidgetPreferences extends ExtensionPreferences{
     return group;
   }
 
-  buildPomodorosLengthGroup(window){
+  buildPomodorosLengthGroup(window) {
     const group = Adw.PreferencesGroup.new();
     group.set_title(_("Length"));
     group.set_name("pomodoros-length-group");
@@ -89,7 +96,7 @@ export default class PomodoroWidgetPreferences extends ExtensionPreferences{
     return group;
   }
 
-  buildPomodorosAutoStartGroup(window){
+  buildPomodorosAutoStartGroup(window) {
     const group = Adw.PreferencesGroup.new();
     group.set_title(_("Auto start"));
     group.set_name("pomodoros-auto-start-group");
@@ -109,19 +116,57 @@ export default class PomodoroWidgetPreferences extends ExtensionPreferences{
     return group;
   }
 
-  buildPomodorosColor(window){
+  buildPomodorosColor(window) {
     const group = Adw.PreferencesGroup.new();
     group.set_title(_("Colors"));
     group.set_name("pomodoros-colors");
 
-    const pomodor_color = Adw.SwitchRow.new();
-    pomodor_color.set_title(_("Pomodoro color"));
-    pomodor_color.set_name("pomodoro-color");
-    window._settings.bind("pomodoro-color", pomodor_color, "color-scheme", Gio.SettingsBindFlags.DEFAULT);
-    group.add(pomodor_color);
+    //const pomodoro_color = ColorRow.new();
+    /*
+    const colorParse = new Gdk.RGBA();
+    colorParse.parse(window._settings.get_value("pomodoro-color").deep_unpack());
+
+    const colorButton = Gtk.ColorButton.new_with_rgba(colorParse);
+    colorButton.add_css_class("colorrowbutton");
+    colorButton.connect('color-set', () => {
+      const string_color = this.get_rgba().to_string();
+      window._settings.set_value(
+        "pomodoro_color",
+        new GLib.Variant("s", string_color)
+      );
+    });
+    const pomodoro_color = Adw.ActionRow.new();
+    pomodoro_color.add_suffix(colorButton);
+    pomodoro_color.set_title(_("Pomodoro color"));
+    pomodoro_color.set_name("pomodoro-color");
+    */
+
+    group.add(this.buildColorButton(window, "pomodoro-color",
+                                    "Pomodoro color"));
 
     return group;
   }
 
+  buildColorButton(window, key, title) {
+    const colorParse = new Gdk.RGBA();
+    colorParse.parse(window._settings.get_value(key).deep_unpack());
+
+    const colorButton = Gtk.ColorButton.new_with_rgba(colorParse);
+    colorButton.add_css_class("colorrowbutton");
+    colorButton.connect('color-set', () => {
+      console.log("color_set");
+      const string_color = colorButton.get_rgba().to_string();
+      console.log(`string_color: ${string_color}`);
+      window._settings.set_value(
+        key,
+        new GLib.Variant("s", string_color)
+      );
+    });
+    const colorRow = Adw.ActionRow.new();
+    colorRow.add_suffix(colorButton);
+    colorRow.set_title(title);
+    colorRow.set_name(key);
+    return colorRow;
+  }
 };
 
