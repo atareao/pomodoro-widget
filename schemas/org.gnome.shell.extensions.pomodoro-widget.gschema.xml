@@ -51,6 +51,16 @@
             <summary>Location</summary>
             <description>Location of the Pomodoro Desktop</description>
         </key>
+        <key name="pomodoro-diameter" type="i">
+            <default>256</default>
+            <summary>Diameter</summary>
+            <description>Pomodoro diameter (px)</description>
+        </key>
+        <key name="pomodoro-width" type="i">
+            <default>25</default>
+            <summary>Width</summary>
+            <description>Pomodoro width (px)</description>
+        </key>
         <key name="pomodoro-color" type="s">
           <default>'#D95550'</default>
           <summary>Pomodoro color</summary>
