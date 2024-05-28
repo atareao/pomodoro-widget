@@ -22,22 +22,34 @@
  * IN THE SOFTWARE.
  */
 
-const {Clutter, Gio, GLib, GObject, Meta, Pango, Shell, St} = imports.gi;
+const {Clutter, Gio, GLib, GObject, Meta, Mtk, Pango, Shell, St} = imports.gi;
 
-const MessageTray = imports.ui.messageTray;
-const Main = imports.ui.main;
-const PopupMenu = imports.ui.popupMenu;
-const DND = imports.ui.dnd;
+//const MessageTray = imports.ui.messageTray;
+import * as Main from 'resource:///org/gnome/shell/ui/main.js';
+import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
+import * as DND from 'resource:///org/gnome/shell/ui/dnd.js';
+//const Main = imports.ui.main;
+//const PopupMenu = imports.ui.popupMenu;
+//const DND = imports.ui.dnd;
 
-const ExtensionUtils = imports.misc.extensionUtils;
-const Extension = ExtensionUtils.getCurrentExtension();
-const PieChart = Extension.imports.piechart.PieChart;
+import {
+  Extension,
+  gettext as _,
+} from 'resource:///org/gnome/shell/extensions/extension.js';
 
-const Gettext = imports.gettext.domain(Extension.uuid);
-const _ = Gettext.gettext;
+import Config from './config.js';
+import setup from './utils/setup.js';
+import * as Widget from './piechart.js';
+//const ExtensionUtils = imports.misc.extensionUtils;
+//const Extension = ExtensionUtils.getCurrentExtension();
+//const PieChart = Extension.imports.piechart.PieChart;
 
-var PomodoroWidget = GObject.registerClass(
-    class PomodoroWidget extends St.BoxLayout {
+//const Gettext = imports.gettext.domain(Extension.uuid);
+//const _ = Gettext.gettext;
+
+const PomodoroWidget = GObject.registerClass({
+  GTypeName: "PomodoroWidget",
+  }, class PomodoroWidget extends St.BoxLayout {
         _init() {
             super._init({
                 vertical: true,
@@ -46,7 +58,14 @@ var PomodoroWidget = GObject.registerClass(
                 can_focus: true,
             });
 
-            this._settings = ExtensionUtils.getSettings();
+            this._settings = new Gio.Settings({
+                settings_schema: Config.GSCHEMA.lookup(
+                    'org.gnome.shell.extensions.pomodoro-widget',
+                    null
+                ),
+                path: '/org/gnome/shell/extensions/pomodoro-widget/',
+            });
+
             this._menuManager = new PopupMenu.PopupMenuManager(this);
 
             this._stationLabel = new St.Label({
@@ -64,7 +83,7 @@ var PomodoroWidget = GObject.registerClass(
                 track_hover: false
             });
             this.add_child(container);
-            this._pomodoroPieChart = new PieChart(280, 280, 45, "0");
+            this._pomodoroPieChart = new Widget.PieChart(280, 280, 45, "0");
             container.add_child(this._pomodoroPieChart);
 
             let down_buttons = new St.BoxLayout({
@@ -180,16 +199,16 @@ var PomodoroWidget = GObject.registerClass(
             }else{
                 this._startStopButton.set_label(_("Start"));
                 this._stationLabel.set_text(_("Stopped"));
-                this._pomodoroPieChart.setText("-");
-                this._pomodoroPieChart.setPercentage(0);
+                this._pomodoroPieChart.setValue(0);
                 this._pomodoroPieChart.setColor(this._pomodoroColor);
                 this._pomodoroPieChart.redraw();
             }
         }
 
         _getMetaRectForCoords(x, y){
+            console.log("[PomodoroWidget] => getMetaRectForCoords");
             this.get_allocation_box();
-            let rect = new Meta.Rectangle();
+            let rect = new Mtk.Rectangle();
 
             [rect.x, rect.y] = [x, y];
             [rect.width, rect.height] = this.get_transformed_size();
@@ -197,11 +216,13 @@ var PomodoroWidget = GObject.registerClass(
         }
 
         _getWorkAreaForRect(rect){
+            console.log("[PomodoroWidget] => getWorkAreaForRect");
             let monitorIndex = global.display.get_monitor_index_for_rect(rect);
             return Main.layoutManager.getWorkAreaForMonitor(monitorIndex);
         }
 
         _isOnScreen(x, y){
+            console.log("[PomodoroWidget] => isOnScreen");
             let rect = this._getMetaRectForCoords(x, y);
             let monitorWorkArea = this._getWorkAreaForRect(rect);
 
@@ -209,6 +230,7 @@ var PomodoroWidget = GObject.registerClass(
         }
 
         _keepOnScreen(x, y){
+            console.log("[PomodoroWidget] => keepOnScreen");
             let rect = this._getMetaRectForCoords(x, y);
             let monitorWorkArea = this._getWorkAreaForRect(rect);
 
@@ -222,6 +244,7 @@ var PomodoroWidget = GObject.registerClass(
         }
 
         setPosition(){
+            console.log("[PomodoroWidget] => setPosition");
             if(this._ignorePositionUpdate)
                 return;
 
@@ -248,21 +271,23 @@ var PomodoroWidget = GObject.registerClass(
         }
 
         setRunning(value){
+            console.log("[PomodoroWidget] => setRunning");
             this._running = value;
             this._settings.set_value('running', new GLib.Variant('i', value));
         }
 
         setElapsed(value){
+            console.log("[PomodoroWidget] => setElapsed");
             this._settings.set_value('elapsed', new GLib.Variant('i', value));
         }
 
         stop(){
+            console.log("[PomodoroWidget] => stop");
             this.setRunning(-1);
             this.setElapsed(0);
             this._startStopButton.set_label(_("Start"));
             this._stationLabel.set_text(_("Stopped"));
-            this._pomodoroPieChart.setText("-");
-            this._pomodoroPieChart.setPercentage(0);
+            this._pomodoroPieChart.setValue(0);
             this._pomodoroPieChart.setColor(this._pomodoroColor);
             this._pomodoroPieChart.redraw();
             if(this._counter){
@@ -272,6 +297,7 @@ var PomodoroWidget = GObject.registerClass(
         }
 
         play(){
+            console.log("[PomodoroWidget] => play");
             if(this._counter){
                 GLib.source_remove(this._counter);
                 this._counter = null;
@@ -288,6 +314,7 @@ var PomodoroWidget = GObject.registerClass(
         }
 
         update() {
+            console.log("[PomodoroWidget] => update");
             if(this._running < 0){
                 return false;
             }
@@ -350,8 +377,7 @@ var PomodoroWidget = GObject.registerClass(
                     return false;
                 }
             }
-            this._pomodoroPieChart.setText(text);
-            this._pomodoroPieChart.setPercentage(percentage);
+            this._pomodoroPieChart.setValue(percentage);
             this._pomodoroPieChart.setColor(color);
             this._pomodoroPieChart.redraw();
             this._stationLabel.set_text(station);
@@ -360,6 +386,7 @@ var PomodoroWidget = GObject.registerClass(
         }
 
         loadPreferences(){
+            console.log("[PomodoroWidget] => loadPreferences");
             this._running = this._settings.get_int("running");
             this._elapsed = this._settings.get_int("elapsed");
             this._pomodoros = this._settings.get_int("pomodoros");
@@ -374,6 +401,7 @@ var PomodoroWidget = GObject.registerClass(
         }
 
         vfunc_button_press_event() {
+            console.log("[PomodoroWidget] => vfunc_button_press_event");
             let event = Clutter.get_current_event();
 
             if (event.get_button() === 1)
@@ -387,6 +415,7 @@ var PomodoroWidget = GObject.registerClass(
         }
 
         _onDragBegin() {
+            console.log("[PomodoroWidget] => onDragBegin");
             if(this._menu)
                 this._menu.close(true);
             this._removeMenuTimeout();
@@ -407,6 +436,7 @@ var PomodoroWidget = GObject.registerClass(
         }
 
         _onDragMotion(dragEvent) {
+            console.log("[PomodoroWidget] => onDragMotion");
             this.deltaX = dragEvent.x - ( dragEvent.x - this.oldX );
             this.deltaY = dragEvent.y - ( dragEvent.y - this.oldY );
 
@@ -418,6 +448,7 @@ var PomodoroWidget = GObject.registerClass(
         }
 
         _onDragEnd() {
+            console.log("[PomodoroWidget] => onDragEnd");
             if (this._dragMonitor) {
                 DND.removeDragMonitor(this._dragMonitor);
                 this._dragMonitor = null;
@@ -427,10 +458,12 @@ var PomodoroWidget = GObject.registerClass(
         }
 
         getDragActorSource() {
+            console.log("[PomodoroWidget] => getDragSource");
             return this;
         }
 
         makeDraggable(){
+            console.log("[PomodoroWidget] => makeDragable");
             this._draggable = DND.makeDraggable(this);
             this._draggable._animateDragEnd = (eventTime) => {
                 this._draggable._animationInProgress = true;
@@ -441,11 +474,13 @@ var PomodoroWidget = GObject.registerClass(
         }
 
         _onHover() {
+            console.log("[PomodoroWidget] => onHover");
             if(!this.hover)
                 this._removeMenuTimeout();
         }
 
         _removeMenuTimeout() {
+            console.log("[PomodoroWidget] => removeMenuTimeout");
             if (this._menuTimeoutId) {
                 GLib.source_remove(this._menuTimeoutId);
                 this._menuTimeoutId = null;
@@ -453,6 +488,7 @@ var PomodoroWidget = GObject.registerClass(
         }
 
         _setPopupTimeout() {
+            console.log("[PomodoroWidget] => setPopupTimeout");
             this._removeMenuTimeout();
             this._menuTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 600, () => {
                 this._menuTimeoutId = null;
@@ -462,6 +498,7 @@ var PomodoroWidget = GObject.registerClass(
         }
 
         _popupMenu() {
+            console.log("[PomodoroWidget] => popupMenu");
             this._removeMenuTimeout();
 
             if (!this._menu) {
@@ -480,6 +517,7 @@ var PomodoroWidget = GObject.registerClass(
         }
 
         _onDestroy() {
+            console.log("[PomodoroWidget] => onDestroy");
             if(this._counter){
                 GLib.source_remove(this._counter);
                 this._counter = null;
@@ -495,6 +533,7 @@ var PomodoroWidget = GObject.registerClass(
         }
 
         destroy(){
+            console.log("[PomodoroWidget] => destroy");
             this._connections.forEach(connection => {
                 this._settings.disconnect(connection);
             });
@@ -507,27 +546,35 @@ var PomodoroWidget = GObject.registerClass(
 
 let pomodoroWidget;
 
-function init(){
-    ExtensionUtils.initTranslations();
-}
+export default class PomodoroWidgetExtension extends Extension {
+  constructor(metadata) {
+    console.log("[PomodoroWidget] => constructor");
+    super(metadata);
+    setup(this.path);
+    this._metadata = metadata;
+  }
 
-function enable() {
-    if(Meta.is_wayland_compositor()){
-        Extension.metadata.isWayland = true;
-    }else{
-        Extension.metadata.isWayland = false;
-    }
-    pomodoroWidget = new PomodoroWidget();
-    pomodoroWidget.set_pivot_point(0.5, 0.5);
+  
+  enable() {
+      console.log("[PomodoroWidget] => enabled");
+      if(Meta.is_wayland_compositor()){
+          this._metadata.isWayland = true;
+      }else{
+          this._metadata.isWayland = false;
+      }
+      pomodoroWidget = new PomodoroWidget();
+      pomodoroWidget.set_pivot_point(0.5, 0.5);
 
-    /*
-    * Widget needs to be above wallpaper and below any active windows.
-    */
-    Main.layoutManager._backgroundGroup.add_child(pomodoroWidget);
-    pomodoroWidget.setPosition();
-}
+      /*
+      * Widget needs to be above wallpaper and below any active windows.
+      */
+      Main.layoutManager._backgroundGroup.add_child(pomodoroWidget);
+      pomodoroWidget.setPosition();
+  }
 
-function disable() {
-    pomodoroWidget.destroy();
-    pomodoroWidget = null;
+  disable() {
+      console.log("[PomodoroWidget] => disabled");
+      pomodoroWidget.destroy();
+      pomodoroWidget = null;
+  }
 }

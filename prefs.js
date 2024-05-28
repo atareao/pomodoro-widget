@@ -22,84 +22,42 @@
  * IN THE SOFTWARE.
  */
 
-const {GLib, GObject, Gio, Gtk, Gdk} = imports.gi;
+import Adw from "gi://Adw";
+import Gio from "gi://Gio";
 
-const ExtensionUtils = imports.misc.extensionUtils;
-const Extension = ExtensionUtils.getCurrentExtension();
-const Widgets = Extension.imports.preferenceswidget;
-const AboutPage = Extension.imports.aboutpage.AboutPage;
-const Gettext = imports.gettext.domain(Extension.uuid);
-const _ = Gettext.gettext;
+import {
+    ExtensionPreferences,
+    gettext as _,
+} from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 
-function init() {
-    ExtensionUtils.initTranslations();
-}
+export default class PomodoroWidgetPreferences extends ExtensionPreferences{
+  fillPreferencesWindow(window) {
+    window._settings = this.getSettings();
+    window.search_enabled = true;
+    window.set_default_size(800, 600);
 
-var PomodoroWidgetPreferencesWidget = GObject.registerClass(
-    class PomodoroWidgetPreferencesWidget extends Widgets.ListWithStack{
-        _init(){
-            super._init();
+    const page = Adw.PreferencesPage.new();
+    page.set_title(_("Pomodoro Widget"));
+    page.set_name("pomodoro-widget-preferences");
 
-            let preferencesPage = new Widgets.Page();
+    const group = Adw.PreferencesGroup.new();
+    group.set_title(_("Pomodoros"));
+    group.set_name("pomodoros_group");
 
-            var settings = ExtensionUtils.getSettings();
+    const number_of_pomodoros = Adw.SpinRow.new_with_range(1, 10, 1);
+    number_of_pomodoros.set_title(_("Number of pomodoros"));
+    number_of_pomodoros.set_name("number-of-pomodoros");
+    window._settings.bind("pomodoros", number_of_pomodoros, "active", Gio.SettingsBindFlags.DEFAULT);
+    group.add(number_of_pomodoros);
 
-            let pomodoroSection = preferencesPage.addFrame(
-                _("Pomodoro options"));
+    const pomodoro_length = Adw.SpinRow.new_with_range(1, 60, 1);
+    pomodoro_length.set_title(_("Pomodoro length"));
+    pomodoro_length.set_name("pomodoro-length");
+    window._settings.bind("pomodoro-length", pomodoro_length, "active", Gio.SettingsBindFlags.DEFAULT);
+    group.add(pomodoro_length);
 
-            pomodoroSection.addWidgetSetting(
-                settings,
-                "pomodoros",
-                new Widgets.NumberSetting(settings, "pomodoros", 2, 1000, 0));
-            pomodoroSection.addWidgetSetting(
-                settings,
-                "pomodoro-length",
-                new Widgets.NumberSetting(settings, "pomodoro-length", 1, 60, 0));
-            pomodoroSection.addWidgetSetting(
-                settings,
-                "short-break-length",
-                new Widgets.NumberSetting(settings, "short-break-length", 1, 60, 0));
-            pomodoroSection.addWidgetSetting(
-                settings,
-                "long-break-length",
-                new Widgets.NumberSetting(settings, "long-break-length", 1, 60, 0));
-            pomodoroSection.addGSetting(settings, "auto-start-breaks");
-            pomodoroSection.addGSetting(settings, "auto-start-pomodoros");
-            pomodoroSection.addGSetting(settings, "lock-widget");
+    page.add(group);
+    window.add(page);
+  }
+};
 
-            let preferencesStylePage = new Widgets.Page();
-            let pomodoroStyleSection = preferencesStylePage.addFrame(
-                _("Pomodoro style options"));
-            pomodoroStyleSection.addWidgetSetting(
-                settings,
-                "pomodoro-color",
-                new Widgets.ColorSetting(settings, "pomodoro-color"));
-            pomodoroStyleSection.addWidgetSetting(
-                settings,
-                "short-break-color",
-                new Widgets.ColorSetting(settings, "short-break-color"));
-            pomodoroStyleSection.addWidgetSetting(
-                settings,
-                "long-break-color",
-                new Widgets.ColorSetting(settings, "long-break-color"));
-            this.add(_("Pomodoro Widget Preferences"),
-                     "preferences-other-symbolic",
-                     preferencesPage);
-            this.add(_("Pomodoro Style Preferences"),
-                     "preferences-other-symbolic",
-                     preferencesStylePage);
-            this.add(_("About"), "help-about-symbolic", new AboutPage());
-        }
-    }
-);
-
-function buildPrefsWidget() {
-    let preferencesWidget = new PomodoroWidgetPreferencesWidget();
-    preferencesWidget.connect("realize", ()=>{
-        const window = preferencesWidget.get_root();
-        window.set_title(_("Pomodoro Widget Configuration"));
-        window.default_height = 800;
-        window.default_width = 850;
-    });
-    return preferencesWidget;
-}
