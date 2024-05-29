@@ -23,16 +23,12 @@
  */
 
 import Adw from "gi://Adw";
-import Gio from "gi://Gio";
-import Gdk from "gi://Gdk";
-import Gtk from "gi://Gtk";
-import GLib from "gi://GLib";
-
 import {
   ExtensionPreferences,
   gettext as _,
 } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
-import ColorRow from "./colorrow.js"
+
+import * as PrefsHelper from "./prefs_helper.js";
 
 export default class PomodoroWidgetPreferences extends ExtensionPreferences {
   fillPreferencesWindow(window) {
@@ -49,12 +45,13 @@ export default class PomodoroWidgetPreferences extends ExtensionPreferences {
     page.add(this.buildPomodorosAutoStartGroup(window));
     window.add(page);
 
-    const page_colors = Adw.PreferencesPage.new();
-    page_colors.set_title(_("Colors"))
-    page.set_name("pomodoro-widget-colors");
+    const page_appearance = Adw.PreferencesPage.new();
+    page_appearance.set_title(_("Appearance"))
+    page_appearance.set_name("pomodoro-appearance");
 
-    page_colors.add(this.buildPomodorosColor(window));
-    window.add(page_colors);
+    page_appearance.add(this.buildPomodorosColor(window));
+    page_appearance.add(this.buildPomodorosDimensions(window));
+    window.add(page_appearance);
   }
 
   buildPomodorosGroup(window) {
@@ -62,11 +59,7 @@ export default class PomodoroWidgetPreferences extends ExtensionPreferences {
     group.set_title(_("Pomodoros"));
     group.set_name("pomodoros-group");
 
-    const number_of_pomodoros = Adw.SpinRow.new_with_range(1, 10, 1);
-    number_of_pomodoros.set_title(_("Number of pomodoros"));
-    number_of_pomodoros.set_name("number-of-pomodoros");
-    window._settings.bind("pomodoros", number_of_pomodoros, "value", Gio.SettingsBindFlags.DEFAULT);
-    group.add(number_of_pomodoros);
+    group.add(PrefsHelper.buildSpinRow(window, "pomodoros", "Number of pomodoros", 1, 10));
     return group;
   }
 
@@ -75,24 +68,9 @@ export default class PomodoroWidgetPreferences extends ExtensionPreferences {
     group.set_title(_("Length"));
     group.set_name("pomodoros-length-group");
 
-    const pomodoro_length = Adw.SpinRow.new_with_range(1, 60, 1);
-    pomodoro_length.set_title(_("Pomodoro length"));
-    pomodoro_length.set_name("pomodoro-length");
-    window._settings.bind("pomodoro-length", pomodoro_length, "value", Gio.SettingsBindFlags.DEFAULT);
-    group.add(pomodoro_length);
-
-    const short_break_length = Adw.SpinRow.new_with_range(1, 60, 1);
-    short_break_length.set_title(_("Short break length"));
-    short_break_length.set_name("short-break-length");
-    window._settings.bind("short-break-length", short_break_length, "value", Gio.SettingsBindFlags.DEFAULT);
-    group.add(short_break_length);
-
-    const long_break_length = Adw.SpinRow.new_with_range(1, 60, 1);
-    long_break_length.set_title(_("Long break length"));
-    long_break_length.set_name("long-break-length");
-    window._settings.bind("long-break-length", long_break_length, "value", Gio.SettingsBindFlags.DEFAULT);
-    group.add(long_break_length);
-
+    group.add(PrefsHelper.buildSpinRow(window, "pomodoro-length", "Pomodoro length", 1, 60));
+    group.add(PrefsHelper.buildSpinRow(window, "short-break-length", "Short break length", 1, 60));
+    group.add(PrefsHelper.buildSpinRow(window, "long-break-length", "Long break length", 1, 60));
     return group;
   }
 
@@ -101,18 +79,8 @@ export default class PomodoroWidgetPreferences extends ExtensionPreferences {
     group.set_title(_("Auto start"));
     group.set_name("pomodoros-auto-start-group");
 
-    const auto_start_breaks = Adw.SwitchRow.new();
-    auto_start_breaks.set_title(_("Auto start breaks"));
-    auto_start_breaks.set_name("auto-start-breaks");
-    window._settings.bind("auto-start-breaks", auto_start_breaks, "active", Gio.SettingsBindFlags.DEFAULT);
-    group.add(auto_start_breaks);
-
-    const auto_start_pomodoros = Adw.SwitchRow.new();
-    auto_start_pomodoros.set_title(_("Auto start pomodoros"));
-    auto_start_pomodoros.set_name("auto-start-pomodoros");
-    window._settings.bind("auto-start-pomodoros", auto_start_pomodoros, "active", Gio.SettingsBindFlags.DEFAULT);
-    group.add(auto_start_pomodoros);
-
+    group.add(PrefsHelper.buildSwitchRow(window, "auto-start-breaks", "Auto start breaks"));
+    group.add(PrefsHelper.buildSwitchRow(window, "auto-start-pomodoros", "Auto start pomodoros"));
     return group;
   }
 
@@ -121,52 +89,26 @@ export default class PomodoroWidgetPreferences extends ExtensionPreferences {
     group.set_title(_("Colors"));
     group.set_name("pomodoros-colors");
 
-    //const pomodoro_color = ColorRow.new();
-    /*
-    const colorParse = new Gdk.RGBA();
-    colorParse.parse(window._settings.get_value("pomodoro-color").deep_unpack());
-
-    const colorButton = Gtk.ColorButton.new_with_rgba(colorParse);
-    colorButton.add_css_class("colorrowbutton");
-    colorButton.connect('color-set', () => {
-      const string_color = this.get_rgba().to_string();
-      window._settings.set_value(
-        "pomodoro_color",
-        new GLib.Variant("s", string_color)
-      );
-    });
-    const pomodoro_color = Adw.ActionRow.new();
-    pomodoro_color.add_suffix(colorButton);
-    pomodoro_color.set_title(_("Pomodoro color"));
-    pomodoro_color.set_name("pomodoro-color");
-    */
-
-    group.add(this.buildColorButton(window, "pomodoro-color",
+    group.add(PrefsHelper.buildColorRow(window, "pomodoro-color",
                                     "Pomodoro color"));
-
+    group.add(PrefsHelper.buildColorRow(window, "short-break-color",
+                                    "Short break color"));
+    group.add(PrefsHelper.buildColorRow(window, "long-break-color",
+                                    "Long break color"));
+    group.add(PrefsHelper.buildColorRow(window, "pomodoro-border-color",
+                                    "Pomodoro border color"));
     return group;
   }
 
-  buildColorButton(window, key, title) {
-    const colorParse = new Gdk.RGBA();
-    colorParse.parse(window._settings.get_value(key).deep_unpack());
+  buildPomodorosDimensions(window) {
+    const group = Adw.PreferencesGroup.new();
+    group.set_title(_("Dimensions"));
+    group.set_name("pomodoros-dimensions");
 
-    const colorButton = Gtk.ColorButton.new_with_rgba(colorParse);
-    colorButton.add_css_class("colorrowbutton");
-    colorButton.connect('color-set', () => {
-      console.log("color_set");
-      const string_color = colorButton.get_rgba().to_string();
-      console.log(`string_color: ${string_color}`);
-      window._settings.set_value(
-        key,
-        new GLib.Variant("s", string_color)
-      );
-    });
-    const colorRow = Adw.ActionRow.new();
-    colorRow.add_suffix(colorButton);
-    colorRow.set_title(title);
-    colorRow.set_name(key);
-    return colorRow;
+    group.add(PrefsHelper.buildSpinRow(window, "pomodoro-diameter", "Pomodoro diameter", 1, 1000));
+    group.add(PrefsHelper.buildSpinRow(window, "pomodoro-width", "Pomodoro width", 1, 1000));
+    group.add(PrefsHelper.buildSpinRow(window, "pomodoro-border-width", "Pomodoro border width", 1, 1000));
+    return group;
   }
 };
 
