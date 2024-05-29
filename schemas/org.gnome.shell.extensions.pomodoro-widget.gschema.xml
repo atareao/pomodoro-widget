@@ -61,6 +61,11 @@
             <summary>Width</summary>
             <description>Pomodoro width (px)</description>
         </key>
+        <key name="pomodoro-border-width" type="i">
+            <default>5</default>
+            <summary>Border width</summary>
+            <description>Pomodoro border width (px)</description>
+        </key>
         <key name="pomodoro-color" type="s">
           <default>'#D95550'</default>
           <summary>Pomodoro color</summary>
@@ -75,6 +80,11 @@
           <default>'#457CA3'</default>
           <summary>Long break color</summary>
           <description>Long break color</description>
+        </key>
+        <key name="pomodoro-border-color" type="s">
+          <default>'#D95550'</default>
+          <summary>Pomodoro border color</summary>
+          <description>Pomodoro border color</description>
         </key>
         <key name="notifications" type="b">
             <default>false</default>
