@@ -99,6 +99,8 @@ export default class PomodoroWidgetPreferences extends ExtensionPreferences {
                                     "Long break color"));
     group.add(PrefsHelper.buildColorRow(window, "pomodoro-border-color",
                                     "Pomodoro border color"));
+    group.add(PrefsHelper.buildColorRow(window, "font-color",
+                                    "Font color"));
     return group;
   }
 
@@ -110,6 +112,7 @@ export default class PomodoroWidgetPreferences extends ExtensionPreferences {
     group.add(PrefsHelper.buildSpinRow(window, "pomodoro-diameter", "Pomodoro diameter", 1, 1000));
     group.add(PrefsHelper.buildSpinRow(window, "pomodoro-width", "Pomodoro width", 1, 1000));
     group.add(PrefsHelper.buildSpinRow(window, "pomodoro-border-width", "Pomodoro border width", 1, 1000));
+    group.add(PrefsHelper.buildSpinRow(window, "font-size", "Font size", 1, 100));
     return group;
   }
 };

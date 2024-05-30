@@ -91,6 +91,16 @@
           <summary>Pomodoro border color</summary>
           <description>Pomodoro border color</description>
         </key>
+        <key name="font-size" type="i">
+            <default>40</default>
+            <summary>Font size</summary>
+            <description>Font size</description>
+        </key>
+        <key name="font-color" type="s">
+          <default>'#D95550'</default>
+          <summary>Font color</summary>
+          <description>Font color</description>
+        </key>
         <key name="notifications" type="b">
             <default>false</default>
             <summary>Enable notifications</summary>
