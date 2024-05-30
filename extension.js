@@ -22,7 +22,7 @@
  * IN THE SOFTWARE.
  */
 
-const { Clutter, Gio, GLib, GObject, Meta, Mtk, Pango, Shell, St } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Meta, Mtk, Pango, St } = imports.gi;
 
 //const MessageTray = imports.ui.messageTray;
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
@@ -389,9 +389,14 @@ const PomodoroWidget = GObject.registerClass({
     this._longBreakLength = this._settings.get_int("long-break-length");
     this._autoStartBreaks = this._settings.get_int("auto-start-breaks");
     this._autoStartPomodoros = this._settings.get_int("auto-start-pomodoros");
+    this._pomodoroDiameter = this._settings.get_int("pomodoro-diameter");
+    this._pomodoroWidth = this._settings.get_int("pomodoro-width");
+    this._pomodoroBorderWidth = this._settings.get_int("pomodoro-border-width");
+    this._pomodoroBackgroundColor = this._settings.get_string("pomodoro-background-color");
     this._pomodoroColor = this._settings.get_string("pomodoro-color");
     this._shortBreakColor = this._settings.get_string("short-break-color");
     this._longBreakColor = this._settings.get_string("long-break-color");
+    this._pomodoroBorderColor = this._settings.get_string("pomodoro-border-color");
   }
 
   vfunc_button_press_event() {

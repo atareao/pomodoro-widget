@@ -89,6 +89,8 @@ export default class PomodoroWidgetPreferences extends ExtensionPreferences {
     group.set_title(_("Colors"));
     group.set_name("pomodoros-colors");
 
+    group.add(PrefsHelper.buildColorRow(window, "pomodoro-background-color",
+                                    "Pomodoro background color"));
     group.add(PrefsHelper.buildColorRow(window, "pomodoro-color",
                                     "Pomodoro color"));
     group.add(PrefsHelper.buildColorRow(window, "short-break-color",

@@ -66,6 +66,11 @@
             <summary>Border width</summary>
             <description>Pomodoro border width (px)</description>
         </key>
+        <key name="pomodoro-background-color" type="s">
+          <default>'#D95550'</default>
+          <summary>Pomodoro background-color</summary>
+          <description>Pomodoro background color</description>
+        </key>
         <key name="pomodoro-color" type="s">
           <default>'#D95550'</default>
           <summary>Pomodoro color</summary>

@@ -157,19 +157,36 @@ export const PieChart = GObject.registerClass(
       this._content.setValue(value);
     }
 
+    setDiameter(diameter){
+      this._diameter = diameter;
+    }
+
     setWidth(width) {
-      console.log("[PomodoroWidget] => setWidth");
       this._width = width;
     }
 
-    setHeight(height) {
-      console.log("[PomodoroWidget] => setHeight");
-      this._height = height;
+    setBorderWidth(borderWidth) {
+      this._borderWidth = borderWidth;
     }
 
-    setColor(color) {
-      console.log("[PomodoroWidget] => setColor");
-      this._color = Clutter.Color.from_string(color)[1];
+    setShortBreakColor(shortBreakColor) {
+      this._shortBreakColor = shortBreakColor;
+    }
+
+    setPomodoroBackgroundColor(pomodoroBacgroundColor) {
+      this._pomodoroBacgroundColor = pomodoroBacgroundColor;
+    }
+
+    setPomodoroColor(pomodoroColor) {
+      this._pomodoroColor = pomodoroColor;
+    }
+
+    setLongBreakColor(longBreakColor) {
+      this._longBreakColor = longBreakColor;
+    }
+
+    setPomodoroBorderColor(pomodoroBorderColor) {
+      this._pomodoroBorderColor = pomodoroBorderColor;
     }
 
     redraw() {
