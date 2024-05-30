@@ -22,7 +22,6 @@ export const ContentArea = GObject.registerClass({
     }
     redraw(){
       console.log("[PomodoroWidget] => redraw");
-      //this.vfunc_repaint();
       this.queue_repaint();
       console.log("[PomodoroWidget] => queue_repaint");
     }
@@ -58,7 +57,6 @@ export const ContentArea = GObject.registerClass({
       const [, cosa] = Clutter.Color.from_string("#AAFF00");
       console.log(`[PomodoroWidget] => color: ${cosa}`);
       cr.setSourceColor(cosa);
-      //Clutter.cairo_set_source_color(cr, this._color);
       const start = -Math.PI / 2.0;
       const end = 2.0 * Math.PI * this._value / 100.0 + start;
       cr.arc((width) / 2,
@@ -120,7 +118,6 @@ export const ContentArea = GObject.registerClass({
     _write_centered_text(cr, x, y, text, font, size, color) {
       console.log("[PomodoroWidget] => _write_centered_text");
       let pg_layout = PangoCairo.create_layout(cr);
-      let pg_context = pg_layout.get_context();
       pg_layout.set_font_description(
         Pango.FontDescription.from_string('%s %s'.format(font, size)));
       pg_layout.set_text(text, -1);
@@ -138,7 +135,6 @@ export const ContentArea = GObject.registerClass({
 
 export const PieChart = GObject.registerClass(
   class PieChart extends Clutter.Actor {
-  //class PieChart extends St.Widget {
     _init(width, height, value, text, color = '#00FF00') {
       console.log("[PomodoroWidget] => _init");
       super._init({
@@ -149,25 +145,9 @@ export const PieChart = GObject.registerClass(
       this._width = width;
       this._height = height;
       this.setColor(color);
-      //this._donete = new Donete();
-      //this.add_child(this._donete);
       this._content = new ContentArea();
       this.add_child(this._content);
-      //this.add_child(new St.DrawingArea());
-      /*
-      this._vbox = new St.BoxLayout({
-        vertical: true,
-        y_align: Clutter.ActorAlign.CENTER,
-      });
-      this._vbox.add_child(this._donete);
-      this._canvas = new Clutter.Canvas();
-      this._canvas.set_size(width, height);
-      this._canvas.connect('draw', (canvas, cr, width, height)=>{
-          this._draw(canvas, cr, width, height);
-      });
-      this.redraw();
-      this.set_content(this._canvas);
-      */
+
       this.set_size(width, height);
       this._content.setValue(value);
     }
@@ -194,9 +174,6 @@ export const PieChart = GObject.registerClass(
 
     redraw() {
       console.log("[PomodoroWidget] => redraw");
-      //this._content.redraw();
-      //this._donete.queue_repaint();
-      //    this._canvas.invalidate();
     }
   }
 );
