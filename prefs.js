@@ -34,7 +34,7 @@ export default class PomodoroWidgetPreferences extends ExtensionPreferences {
   fillPreferencesWindow(window) {
     window._settings = this.getSettings();
     window.search_enabled = true;
-    window.set_default_size(800, 600);
+    window.set_default_size(600, 800);
 
     const page = Adw.PreferencesPage.new();
     page.set_title(_("Pomodoro Widget"));

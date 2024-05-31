@@ -194,7 +194,7 @@ const PomodoroWidget = GObject.registerClass({
       this._startStopButton.set_label(_("Start"));
       this._stationLabel.set_text(_("Stopped"));
       this._pomodoroPieChart.setValue(0);
-      this._pomodoroPieChart.setColor(this._pomodoroColor);
+      this._pomodoroPieChart.setPomodoroColor(this._pomodoroColor);
       this._pomodoroPieChart.redraw();
     }
   }

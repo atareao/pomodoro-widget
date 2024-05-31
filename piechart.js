@@ -144,7 +144,7 @@ export const PieChart = GObject.registerClass(
       });
       this._width = width;
       this._height = height;
-      this.setColor(color);
+      this.setPomodoroColor(color);
       this._content = new ContentArea();
       this.add_child(this._content);
 
